@@ -1,0 +1,28 @@
+{
+  "name": "ipa-snake-js-game",
+  "version": "1.0.0",
+  "description": "Adaptation of the classic game snake",
+  "main": "dist/js/snake-game.js",
+  "module": "dist/js/snake-game.esm.js",
+  "sass": "src/scss/snake-game.scss",
+  "style": "dist/css/snake-game.css",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darkdiesel/snake-js-oop.git"
+  },
+  "keywords": [
+    "game",
+    "javascript",
+    "sass",
+    "css",
+    "snake"
+  ],
+  "author": "Igor Peshkov",
+  "license": "GPL-3.0"
+}

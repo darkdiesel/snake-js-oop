@@ -1,0 +1,9 @@
+# phpStorm Files
+.idea/
+
+# Windows thumbnails
+Thumbs.db
+.DS_Store
+
+# npm packages
+node_modules
