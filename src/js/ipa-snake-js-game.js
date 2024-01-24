@@ -1,6 +1,6 @@
 import Game from "./src/game.js";
 
-export default class SnakeGame {
+export default class IpaSnakeJsGame {
     constructor(container, options) {
         this.game = new Game(container, options); // create game
     }
@@ -38,6 +38,6 @@ export default class SnakeGame {
     }
 }
 
-window.SnakeGame = SnakeGame;
+window.SnakeGame = IpaSnakeJsGame;
 
-//new SnakeGame( document.querySelector(".canvas-wrapper") );
+//new IpaSnakeJsGame( document.querySelector(".canvas-wrapper") );

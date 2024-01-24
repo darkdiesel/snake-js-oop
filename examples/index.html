@@ -1,8 +1,219 @@
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Igor Peshkov">
+    <title>IPA Snake game js</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="./../dist/css/ipa-snake-js-game.css" rel="stylesheet">
 </head>
 <body>
+    <main>
+        <div class="row">
+            <div class="col-lg-6 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="accordion accordion-flush border mb-3" id="snakeGameInfo">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSnakeControls" aria-expanded="false" aria-controls="flush-collapseSnakeControls">
+                                        <i class="bi bi-controller me-2"></i> Game Controls
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseSnakeControls" class="accordion-collapse collapse" data-bs-parent="#snakeGameInfo">
+                                    <div class="accordion-body">
+                                        <p>To control the snake, you have several options to choose from.</p>
+                                        <p>If you are play on PC use standard WASD, control arrows or Numpad arrows.</p>
+                                        <p>To control the snake on the mobile device, use the buttons under the playing field.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSnakeSettings" aria-expanded="true" aria-controls="flush-collapseSnakeSettings">
+                                        <i class="bi bi-gear me-2"></i> Game Settings
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseSnakeSettings" class="accordion-collapse collapse show" data-bs-parent="#snakeGameInfo">
+                                    <div class="accordion-body">
+                                        <div class="row mb-3">
+                                            <div class="col-4">
+                                                <label for="snakeSpeed" class="col-form-label"><i class="bi bi-speedometer me-1"></i> Speed</label>
+                                            </div>
+                                            <div class="col-8">
+                                                <input type="range" class="form-range my-2" in="1" max="10" step="1" value="3" name="snakeSpeed" id="snakeSpeed">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3 py-1">
+                                            <div class="col-5 col-sm-4">
+                                                <label class="form-check-label float-start me-2" for="snakeWalls"><i class="bi bi-bricks me-1"></i> Walls</label>
+                                            </div>
+                                            <div class="col-7 col-sm-8">
+                                                <div class="form-check form-switch p-0">
+                                                    <input class="form-check-input float-none mx-0" type="checkbox" role="switch" checked="checked" id="snakeWalls">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3 py-1">
+                                            <div class="col-5 col-sm-4">
+                                                <label class="form-check-label float-start me-2" for="snakeSounds"><i class="bi bi-music-note-beamed me-1"></i> Sounds</label>
+                                            </div>
+                                            <div class="col-7 col-sm-8">
+                                                <div class="form-check form-switch p-0">
+                                                    <input class="form-check-input float-none mx-0" type="checkbox" role="switch" id="snakeSounds">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-4">
+                                                <label for="snakeVolume" class="col-form-label"><i class="bi bi-volume-down-fill me-1"></i> Volume</label>
+                                            </div>
+                                            <div class="col-8">
+                                                <input type="range" class="form-range my-2" min="1" max="100" step="1" value="10" name="snakeVolume" id="snakeVolume">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSnakeInfo" aria-expanded="false" aria-controls="flush-collapseSnakeInfo">
+                                        <i class="bi bi-info-circle me-2"></i> More Info
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseSnakeInfo" class="accordion-collapse collapse" data-bs-parent="#snakeGameInfo">
+                                    <div class="accordion-body">
+                                        <p>
+                                            Follow my github repository to check updates or find i future other classic games on js. <br/>
+                                            <a class="text-info" href="https://github.com/darkdiesel/snake-js-oop" target="_blank"><i class="fa-brands fa-square-github fa-xl"></i></a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-success ipa-snake-game-start"><i class="fa-solid fa-play me-1"></i> Play</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row justify-content-center">
+                            <dov class="col-12">
+                                <div id="snake-game" class="ipa-snake-game">
+                                    <div class="row my-1">
+                                        <div class="col-12">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary ipa-snake-game-start mx-2"><i class="bi bi-play-fill"></i> <span class="visually-hidden">Play</span></button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary ipa-snake-game-pause mx-2"><i class="bi bi-pause-fill"></i> <span class="visually-hidden">Pause</span></button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary ipa-snake-game-stop mx-2"><i class="bi bi-stop-fill"></i> <span class="visually-hidden">Stop</span></button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary ipa-snake-game-reset mx-2"><i class="bi bi-arrow-clockwise"></i> <span class="visually-hidden">Reset</span></button>
+                                            <span class="ipa-snake-game-score">
+                                                Points: <span class="ipa-snake-game-score-count badge text-bg-secondary mb-2">0</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="ipa-snake-game-canvas-wrapper">
 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ipa-snake-js-game-controls">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-12 my-0">
+                                                        <button type="button" class="btn btn-sm btn-outline-info ipa-snake-js-game-control-up"><i class="bi bi-chevron-up"></i> <span class="visually-hidden">Up</span></button>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <button type="button" class="btn btn-sm btn-outline-info ipa-snake-js-game-control-left mx-3"><i class="bi bi-chevron-left"></i> <span class="visually-hidden">Left</span></button>
+                                                        <button type="button" class="btn btn-sm btn-outline-info ipa-snake-js-game-control-right mx-3"><i class="bi bi-chevron-right"></i> <span class="visually-hidden">Right</span></button>
+                                                    </div>
+                                                    <div class="col-12 my-0">
+                                                        <button type="button" class="btn btn-sm btn-outline-info ipa-snake-js-game-control-down"><i class="bi bi-chevron-down"></i> <span class="visually-hidden">Down</span></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </dov>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="../dist/js/ipa-snake-js-game.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            let snakeVolume = document.getElementById("snakeVolume");
+            let snakeSpeed = document.getElementById("snakeSpeed");
+            let snakeSounds = document.getElementById("snakeSounds");
+            let snakeWalls = document.getElementById("snakeWalls");
+
+            let snakeGame = new SnakeGame(document.querySelector(".ipa-snake-game"), {
+                snakeTick: snakeSpeed.value,
+                gameVolume: snakeVolume.value,
+                mute: !snakeSounds.checked,
+                haveWalls: snakeWalls.checked,
+            });
+
+            const startGameBtns = document.querySelectorAll('.ipa-snake-game-start');
+
+            startGameBtns.forEach(el => el.addEventListener('click', event => {
+                snakeGame.start();
+            }));
+
+            const stopGameBtns = document.querySelectorAll('.ipa-snake-game-stop');
+
+            stopGameBtns.forEach(el => el.addEventListener('click', event => {
+                snakeGame.stop();
+            }));
+
+            const pauseGameBtns = document.querySelectorAll('.ipa-snake-game-pause');
+
+            pauseGameBtns.forEach(el => el.addEventListener('click', event => {
+                snakeGame.pause();
+            }));
+
+            const resetGameBtns = document.querySelectorAll('.ipa-snake-game-reset');
+
+            resetGameBtns.forEach(el => el.addEventListener('click', event => {
+                snakeGame.reset();
+            }));
+
+            snakeSounds.addEventListener('click', event => {
+                if (event.target.checked) {
+                    snakeGame.mute(false);
+                } else {
+                    snakeGame.mute(true);
+                }
+            });
+
+            snakeWalls.addEventListener('click', event => {
+                if (event.target.checked) {
+                    snakeGame.setWalls(true);
+                } else {
+                    snakeGame.setWalls(false);
+                }
+            });
+
+            snakeSpeed.addEventListener('input', event => {
+                snakeGame.setSpeed(event.target.value);
+            });
+
+            snakeVolume.addEventListener('input', event => {
+                snakeGame.setVolume(event.target.value);
+            });
+        });
+    </script>
 </body>
 </html>

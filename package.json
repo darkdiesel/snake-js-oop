@@ -2,15 +2,23 @@
   "name": "ipa-snake-js-game",
   "version": "1.0.0",
   "description": "Adaptation of the classic game snake",
-  "main": "dist/js/snake-game.js",
-  "module": "dist/js/snake-game.esm.js",
+  "main": "dist/js/ipa-snake-js-game.js",
+  "module": "dist/js/ipa-snake-js-game.esm.js",
   "sass": "src/scss/snake-game.scss",
   "style": "dist/css/snake-game.css",
   "directories": {
     "example": "examples"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prod": "npm run production",
+    "production": "npm run build:sass:minify",
+    "dev": "npm run development",
+    "development": "npm run build:sass --source-map true --source-map-embed true && npm run postcss",
+    "watch": "npm run build:sass && npm run build:sass -- -w",
+    "build:sass:minify": "node-sass --output-style compressed src/sass/ipa-snake-js-game.scss dist/css/ipa-snake-js-game.min.css",
+    "build:sass": "node-sass src/sass/ipa-snake-js-game.scss dist/css/ipa-snake-js-game.css",
+    "postcss": "postcss -use autoprefixer dist/css/ipa-snake-js-game.css -o dist/css/ipa-snake-js-game.css",
+    "server": "http-server ./"
   },
   "repository": {
     "type": "git",
@@ -24,5 +32,13 @@
     "snake"
   ],
   "author": "Igor Peshkov",
-  "license": "GPL-3.0"
+  "license": "GPL-3.0",
+  "dependencies": {
+    "autoprefixer": "^10.4.17",
+    "bootstrap-icons": "^1.11.3",
+    "http-server": "^14.1.1",
+    "node-sass": "^9.0.0",
+    "postcss": "^8.4.33",
+    "postcss-cli": "^11.0.0"
+  }
 }
