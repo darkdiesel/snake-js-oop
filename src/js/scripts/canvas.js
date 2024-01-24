@@ -1,15 +1,28 @@
 export default class Canvas {
-    constructor(container) {
+    constructor(container, config) {
         this.container = container;
+        this.config = config;
 
+        //@TODO: Check if exist and don't create
         this.element = document.createElement("canvas");
         this.context = this.element.getContext("2d");
 
-        this.element.width = 320;
-        this.element.height = 400;
+        this.element.width = config.pointSizePx * 20; // 10 points original = 16 * 10
+        this.element.height = config.pointSizePx * 26; //20 points original = 16 * 20
 
         this.element.classList.add("ipa-snake-game-canvas");
 
         this.container.querySelector(".ipa-snake-game-canvas-wrapper").appendChild(this.element);
+
+        this.config.centerX = this.getCenterX();
+        this.config.centerY = this.getCenterY();
+    }
+
+    getCenterX(){
+        return Math.floor((this.element.width / this.config.pointSizePx)  / 2) * this.config.pointSizePx;
+    }
+
+    getCenterY(){
+        return Math.floor((this.element.height / this.config.pointSizePx)  / 2) * this.config.pointSizePx;
     }
 }

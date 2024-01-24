@@ -9,7 +9,7 @@ import Apple from "./apple.js";
 
 import Loop from "./loop.js";
 
-import {convertVolume, convertSpeed} from "./functions.js"
+import {convertVolume, convertSpeed, drawCell} from "./functions.js"
 
 export default class Game {
     constructor(container, options = {}) {
@@ -17,7 +17,7 @@ export default class Game {
         this.config = new Config(options);
 
         // create canvas and control elements
-        this.canvas = new Canvas(container);
+        this.canvas = new Canvas(container, this.config);
         this.controls = new Controls(container);
         this.score = new Score(container, 0);
 
@@ -30,7 +30,8 @@ export default class Game {
     }
 
     start() {
-        this.loop.startGameTick();
+        this.clearCanvas();
+        this.loop.start();
     }
 
     stop() {
@@ -54,7 +55,7 @@ export default class Game {
         this.score.setToZero();
         this.apple.randomPosition();
 
-        this.loop.startGameTick();
+        this.loop.start();
     }
 
     mute(mute) {
@@ -73,8 +74,17 @@ export default class Game {
         this.config.gameVolume = convertVolume(volume);
     }
 
+    setWalls(walls) {
+        this.config.haveWalls = walls;
+    }
+
     updateSnake() {
-        this.snake.update(this.apple, this.score, this.canvas);
+        if (this.config.gameOverStatus) {
+            this.drawGameOver();
+        } else {
+            this.snake.update(this.apple, this.score, this.canvas);
+        }
+
     }
 
     drawSnake() {
@@ -94,5 +104,15 @@ export default class Game {
 
     clearCanvas() {
         this.canvas.context.clearRect(0, 0, this.canvas.element.width, this.canvas.element.height);
+    }
+
+    drawGameOver() {
+        for (let y = 0; y < this.canvas.element.height; y+=this.config.pointSizePx) {
+            for (let x = 0; x < this.canvas.element.width; x+=this.config.pointSizePx) {
+                drawCell(x, y, this.canvas.context, this.config.snakeColor, this.config);
+            }
+        }
+
+        this.config.gameOverStatus = false;
     }
 }

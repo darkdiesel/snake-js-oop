@@ -14,19 +14,17 @@ export default class Loop {
         this.gameTickTimer = undefined;
     }
 
-    startGameTick() {
-        this.gameTickTimer = setTimeout(() => {
-            this.startGameTick();
-        }, this.config.gameTick);
+    gameTick() {
+        if (this.config.gameOverStatus) {
+            this.stop();
+            this.snakeUpdate();
+            return;
+        }
 
         this.gameTime = Date.now();
 
-        console.log('tick');
-
         if (this.gameTime - this.snakeTime > this.config.snakeTick) {
             this.snakeTime = Date.now();
-
-            console.log('snake');
 
             this.snakeUpdate();
             this.snakeDraw();
@@ -39,8 +37,19 @@ export default class Loop {
         }
     }
 
+    start() {
+        if (this.gameTickTimer === undefined) {
+            this.gameTickTimer = setInterval(() => {
+                this.gameTick();
+            }, this.config.gameTick);
+        }
+    }
+
     stop() {
-        clearTimeout(this.gameTickTimer);
-        this.gameTickTimer = 0;
+        if (this.gameTickTimer !== undefined) {
+            clearInterval(this.gameTickTimer);
+
+            this.gameTickTimer = undefined;
+        }
     }
 }

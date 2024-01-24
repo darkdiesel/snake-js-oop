@@ -32,9 +32,12 @@ export default class SnakeGame {
     setVolume(volume) {
         this.game.setVolume(volume);
     }
+
+    setWalls(walls) {
+        this.game.setWalls(walls);
+    }
 }
 
 window.SnakeGame = SnakeGame;
 
 //new SnakeGame( document.querySelector(".canvas-wrapper") );
-// console.log('game load');

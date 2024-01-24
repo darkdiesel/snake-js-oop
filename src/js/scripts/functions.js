@@ -33,3 +33,10 @@ export function convertSpeed(speed) {
 
     return (501 - (50 * speed));;
 }
+
+export function drawCell(x, y, context, color, config){
+    context.fillStyle = color;
+
+    context.strokeRect(x, y, config.pointSizePx, config.pointSizePx);
+    context.fillRect(x + config.pointPadding, y + config.pointPadding, config.pointSizePx - config.pointPadding * 2, config.pointSizePx - config.pointPadding * 2);
+}

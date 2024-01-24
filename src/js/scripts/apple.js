@@ -1,12 +1,12 @@
-import {getRandomInt} from "./functions.js";
+import {drawCell, getRandomInt} from "./functions.js";
 
 export default class Apple {
     constructor(canvas, config) {
+        this.config = config;
+        this.canvas = canvas;
+
         this.x = 0;
         this.y = 0;
-
-        this.canvas = canvas;
-        this.config = config;
 
         this.show = true;
 
@@ -27,10 +27,7 @@ export default class Apple {
 
         // if apple visible draw it
         if (this.show) {
-            context.fillStyle = this.config.appleColor;
-
-            context.strokeRect(this.x, this.y, this.config.pointSizePx, this.config.pointSizePx);
-            context.fillRect(this.x + this.config.pointPadding, this.y + this.config.pointPadding, this.config.pointSizePx - this.config.pointPadding * 2, this.config.pointSizePx - this.config.pointPadding * 2);
+            drawCell(this.x, this.y, context, this.config.appleColor, this.config);
         }
     }
 

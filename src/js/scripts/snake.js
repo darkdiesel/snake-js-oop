@@ -1,18 +1,19 @@
+import {drawCell} from "./functions";
 export default class Snake {
 
     constructor(config, controls) {
         this.config = config;
 
-        this.x = 160;
-        this.y = 160;
+        this.x = this.config.centerX;
+        this.y = this.config.centerY;
 
         this.speedX = this.config.pointSizePx;
         this.speedY = 0;
 
         this.points = [];
-        this.maxPoints = 3;
+        this.maxPoints = this.config.snakeStartSize;
 
-        // 1 snake move audio
+        // snake 1 step move audio
         this.moveAudio = new Audio();
         this.moveAudio.preload = 'auto';
         this.moveAudio.src = '/audio/browser-games/snake/mr_9999_14.wav';
@@ -22,6 +23,9 @@ export default class Snake {
         this.gameOverAudio.preload = 'auto';
         this.gameOverAudio.src = '/audio/browser-games/snake/mr_9999_08.wav';
 
+        this.config.gameOverStatus = false;
+
+        // init controls
         this.control(controls);
     }
 
@@ -37,15 +41,31 @@ export default class Snake {
         this.y += this.speedY;
 
         if (this.x < 0) {
-            this.x = canvas.element.width - this.config.pointSizePx;
+            if (this.config.haveWalls) {
+                this.config.gameOverStatus = true;
+            } else {
+                this.x = canvas.element.width - this.config.pointSizePx;
+            }
         } else if (this.x >= canvas.element.width) {
-            this.x = 0;
+            if (this.config.haveWalls) {
+                this.config.gameOverStatus = true;
+            } else {
+                this.x = 0;
+            }
         }
 
         if (this.y < 0) {
-            this.y = canvas.element.height - this.config.pointSizePx;
+            if (this.config.haveWalls) {
+                this.config.gameOverStatus = true;
+            } else {
+                this.y = canvas.element.height - this.config.pointSizePx;
+            }
         } else if (this.y >= canvas.element.height) {
-            this.y = 0;
+            if (this.config.haveWalls) {
+                this.config.gameOverStatus = true;
+            } else {
+                this.y = 0;
+            }
         }
 
         this.points.unshift({x: this.x, y: this.y});
@@ -63,14 +83,38 @@ export default class Snake {
             }
 
             for (let i = index + 1; i < this.points.length; i++) {
-                if (el.x == this.points[i].x && el.y == this.points[i].y) {
-                    this.startGameOverSound();
-                    this.gameOver();
-                    score.setToZero();
-                    apple.randomPosition();
+                if (el.x === this.points[i].x && el.y === this.points[i].y) {
+                    this.config.gameOverStatus = true;
                 }
             }
         });
+
+        if (this.config.gameOverStatus) {
+            this.gameOver();
+            score.setToZero();
+            apple.randomPosition();
+        }
+    }
+
+    /**
+     * Check if snake not rotated back while standing on one cell
+     * @param speedX
+     * @param speedY
+     * @returns {boolean}
+     */
+    checkIfTurnBack(speedX, speedY) {
+        if (typeof this.points[1] === 'undefined') {
+            return false;
+        }
+
+        let x = this.x + speedX;
+        let y = this.y + speedY;
+
+        if ((this.points[1].x === x) && (this.points[1].y === y)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -80,16 +124,14 @@ export default class Snake {
      */
     draw(context) {
         this.points.forEach((el, index) => {
+            //TODO: change color for snake head?
             // if (index == 0) {
-            //     context.fillStyle = "#FA0556";
+            //     context.fillStyle = this.config.snakeColor;
             // } else {
-            //     context.fillStyle = "#A00034";
+            //     context.fillStyle = this.config.snakeColor;
             // }
 
-            context.fillStyle = this.config.snakeColor;
-
-            context.strokeRect(el.x, el.y, this.config.pointSizePx, this.config.pointSizePx);
-            context.fillRect(el.x + this.config.pointPadding, el.y + this.config.pointPadding, this.config.pointSizePx - this.config.pointPadding * 2, this.config.pointSizePx - this.config.pointPadding * 2);
+            drawCell(el.x, el.y, context, this.config.snakeColor, this.config);
         });
     }
 
@@ -99,7 +141,8 @@ export default class Snake {
     startMoveSound() {
         if (!this.config.mute) {
             this.moveAudio.volume = this.config.gameVolume;
-            this.moveAudio.play().then(r => {});
+            this.moveAudio.play().then(r => {
+            });
         }
     }
 
@@ -119,7 +162,8 @@ export default class Snake {
     startGameOverSound() {
         if (!this.config.mute) {
             this.gameOverAudio.volume = this.config.gameVolume;
-            this.gameOverAudio.play().then(r => {});
+            this.gameOverAudio.play().then(r => {
+            });
         }
     }
 
@@ -137,14 +181,18 @@ export default class Snake {
      * Reset snake params in case of game over
      */
     gameOver() {
-        this.x = 160;
-        this.y = 160;
+        this.startGameOverSound();
+
+        this.x = this.config.centerX;
+        this.y = this.config.centerY;
 
         this.speedX = this.config.pointSizePx;
         this.speedY = 0;
 
         this.points = [];
-        this.maxPoints = 3;
+        this.maxPoints = this.config.snakeStartSize;
+
+        // this.config.gameOverStatus = false;
     }
 
     /**
@@ -171,18 +219,26 @@ export default class Snake {
             switch (e.code) {
                 case "KeyW":
                 case "ArrowUp":
+                case "Numpad8":
+                    e.preventDefault();
                     this.moveUp();
                     break;
                 case "KeyS":
                 case "ArrowDown":
+                case "Numpad2":
+                    e.preventDefault();
                     this.moveDown();
                     break;
                 case "KeyA":
                 case "ArrowLeft":
+                case "Numpad4":
+                    e.preventDefault();
                     this.moveLeft();
                     break;
                 case "KeyD":
                 case "ArrowRight":
+                case "Numpad6":
+                    e.preventDefault();
                     this.moveRight();
                     break;
             }
@@ -190,16 +246,25 @@ export default class Snake {
     }
 
     moveUp() {
-        if ( this.speedY !== 0) {
+        if (this.checkIfTurnBack(0, -this.config.pointSizePx)) {
             return;
         }
 
-        this.speedY = -this.config.pointSizePx;
         this.speedX = 0;
+        this.speedY = -this.config.pointSizePx;
+    }
+
+    moveDown() {
+        if (this.checkIfTurnBack(0, this.config.pointSizePx)) {
+            return;
+        }
+
+        this.speedX = 0;
+        this.speedY = this.config.pointSizePx;
     }
 
     moveLeft() {
-        if ( this.speedX !== 0) {
+        if (this.checkIfTurnBack(-this.config.pointSizePx, 0)) {
             return;
         }
 
@@ -207,17 +272,8 @@ export default class Snake {
         this.speedY = 0;
     }
 
-    moveDown() {
-        if ( this.speedY !== 0) {
-            return;
-        }
-
-        this.speedY = this.config.pointSizePx;
-        this.speedX = 0;
-    }
-
     moveRight() {
-        if ( this.speedX !== 0) {
+        if (this.checkIfTurnBack(this.config.pointSizePx, 0)) {
             return;
         }
 
