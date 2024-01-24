@@ -1,29 +1,37 @@
 export default class Snake {
 
-    constructor(config) {
+    constructor(config, controls) {
         this.config = config;
+
         this.x = 160;
         this.y = 160;
+
         this.speedX = this.config.pointSizePx;
         this.speedY = 0;
+
         this.points = [];
         this.maxPoints = 3;
 
+        // 1 snake move audio
         this.moveAudio = new Audio();
-
-        this.moveAudio.volume = this.config.gameVolume;
         this.moveAudio.preload = 'auto';
         this.moveAudio.src = '/audio/browser-games/snake/mr_9999_14.wav';
 
+        // snake crashed move audio
         this.gameOverAudio = new Audio();
-
-        this.gameOverAudio.volume = this.config.gameVolume;
         this.gameOverAudio.preload = 'auto';
         this.gameOverAudio.src = '/audio/browser-games/snake/mr_9999_08.wav';
 
-        this.control();
+        this.control(controls);
     }
 
+    /**
+     * Move snake to direction. Check that the apple has been eaten. Check if snake crashed
+     *
+     * @param apple
+     * @param score
+     * @param canvas
+     */
     update(apple, score, canvas) {
         this.x += this.speedX;
         this.y += this.speedY;
@@ -47,7 +55,6 @@ export default class Snake {
         }
 
         this.points.forEach((el, index) => {
-
             if (el.x === apple.x && el.y === apple.y) {
                 apple.startEatSound();
                 this.maxPoints++;
@@ -86,22 +93,44 @@ export default class Snake {
         });
     }
 
+    /**
+     * Play move sound when snake is moving
+     */
     startMoveSound() {
-        this.moveAudio.play().then(r => console.log('bom'));
+        if (!this.config.mute) {
+            this.moveAudio.volume = this.config.gameVolume;
+            this.moveAudio.play().then(r => {});
+        }
     }
 
+    /**
+     * Stop playing move sound when snake is moving
+     */
     stopMoveSound() {
-        this.moveAudio.pause();
-        this.moveAudio.currentTime = 0;
+        if (!this.config.mute) {
+            this.moveAudio.pause();
+            this.moveAudio.currentTime = 0;
+        }
     }
 
+    /**
+     * Play boom sound when snake is crashed
+     */
     startGameOverSound() {
-        this.gameOverAudio.play().then(r => console.log('bom'));
+        if (!this.config.mute) {
+            this.gameOverAudio.volume = this.config.gameVolume;
+            this.gameOverAudio.play().then(r => {});
+        }
     }
 
+    /**
+     * Stop playing boom sound when snake is crashed
+     */
     stopGameOverSound() {
-        this.gameOverAudio.pause();
-        this.gameOverAudio.currentTime = 0;
+        if (!this.config.mute) {
+            this.gameOverAudio.pause();
+            this.gameOverAudio.currentTime = 0;
+        }
     }
 
     /**
@@ -110,8 +139,10 @@ export default class Snake {
     gameOver() {
         this.x = 160;
         this.y = 160;
+
         this.speedX = this.config.pointSizePx;
         this.speedY = 0;
+
         this.points = [];
         this.maxPoints = 3;
     }
@@ -119,8 +150,22 @@ export default class Snake {
     /**
      * Check controls
      */
-    control() {
-        //keyUp.onClick
+    control(controls) {
+        controls.btnUp.addEventListener("click", async (e) => {
+            this.moveUp();
+        });
+
+        controls.btnDown.addEventListener("click", async (e) => {
+            this.moveDown();
+        });
+
+        controls.btnLeft.addEventListener("click", async (e) => {
+            this.moveLeft();
+        });
+
+        controls.btnRight.addEventListener("click", async (e) => {
+            this.moveRight();
+        });
 
         document.addEventListener("keydown", (e) => {
             switch (e.code) {
@@ -128,13 +173,13 @@ export default class Snake {
                 case "ArrowUp":
                     this.moveUp();
                     break;
-                case "KeyA":
-                case "ArrowLeft":
-                    this.moveLeft();
-                    break;
                 case "KeyS":
                 case "ArrowDown":
                     this.moveDown();
+                    break;
+                case "KeyA":
+                case "ArrowLeft":
+                    this.moveLeft();
                     break;
                 case "KeyD":
                 case "ArrowRight":

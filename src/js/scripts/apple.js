@@ -4,24 +4,34 @@ export default class Apple {
     constructor(canvas, config) {
         this.x = 0;
         this.y = 0;
+
         this.canvas = canvas;
         this.config = config;
 
-        this.eatAudio = new Audio();
+        this.show = true;
 
-        this.eatAudio.volume = this.config.gameVolume;
+        this.eatAudio = new Audio();
         this.eatAudio.preload = 'auto';
         this.eatAudio.src = '/audio/browser-games/snake/mr_9999_05.wav';
 
         this.randomPosition();
     }
 
-    draw(context) {
-        context.beginPath();
-        context.fillStyle = this.config.appleColor;
+    draw(context, changeVisibility = false) {
+        if (changeVisibility) {
+            this.show = !this.show;
+        }
 
-        context.strokeRect(this.x, this.y, this.config.pointSizePx, this.config.pointSizePx);
-        context.fillRect(this.x + this.config.pointPadding, this.y + this.config.pointPadding, this.config.pointSizePx - this.config.pointPadding * 2, this.config.pointSizePx - this.config.pointPadding * 2);
+        // remove apple from canvas
+        this.canvas.context.clearRect(this.x, this.y, this.config.pointSizePx, this.config.pointSizePx);
+
+        // if apple visible draw it
+        if (this.show) {
+            context.fillStyle = this.config.appleColor;
+
+            context.strokeRect(this.x, this.y, this.config.pointSizePx, this.config.pointSizePx);
+            context.fillRect(this.x + this.config.pointPadding, this.y + this.config.pointPadding, this.config.pointSizePx - this.config.pointPadding * 2, this.config.pointSizePx - this.config.pointPadding * 2);
+        }
     }
 
     randomPosition() {
@@ -30,11 +40,16 @@ export default class Apple {
     }
 
     startEatSound() {
-        this.eatAudio.play().then(r => console.log('bom'));
+        if (!this.config.mute) {
+            this.eatAudio.volume = this.config.gameVolume;
+            this.eatAudio.play().then(r => {});
+        }
     }
 
     stopEatSound() {
-        this.eatAudio.pause();
-        this.eatAudio.currentTime = 0;
+        if (!this.config.mute) {
+            this.eatAudio.pause();
+            this.eatAudio.currentTime = 0;
+        }
     }
 }

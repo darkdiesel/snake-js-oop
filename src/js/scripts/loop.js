@@ -1,30 +1,46 @@
 export default class Loop {
-    constructor(update, draw, config) {
-        this.update = update;
-        this.draw = draw;
+    constructor(snakeUpdate, snakeDraw, appleDraw, config) {
+        this.snakeUpdate = snakeUpdate;
+        this.snakeDraw = snakeDraw;
+
+        this.appleDraw = appleDraw;
 
         this.config = config;
 
-        this.animateSnake();
+        this.gameTime = Date.now();
+        this.snakeTime = Date.now();
+        this.appleTime = Date.now();
 
-
+        this.gameTickTimer = undefined;
     }
 
-    animateSnake() {
-        setTimeout(() => {
-            this.animateSnake();
-        }, this.config.gameTimeOut);
+    startGameTick() {
+        this.gameTickTimer = setTimeout(() => {
+            this.startGameTick();
+        }, this.config.gameTick);
 
-        this.update();
-        this.draw();
+        this.gameTime = Date.now();
+
+        console.log('tick');
+
+        if (this.gameTime - this.snakeTime > this.config.snakeTick) {
+            this.snakeTime = Date.now();
+
+            console.log('snake');
+
+            this.snakeUpdate();
+            this.snakeDraw();
+        }
+
+        if (this.gameTime - this.appleTime > this.config.appleTick) {
+            this.appleTime = Date.now();
+
+            this.appleDraw();
+        }
     }
 
-    animateApple() {
-        setTimeout(() => {
-            this.animateSnake();
-            }, this.config.gameAppleBlindTimeOut);
-
-        this.update();
-        this.draw();
+    stop() {
+        clearTimeout(this.gameTickTimer);
+        this.gameTickTimer = 0;
     }
 }

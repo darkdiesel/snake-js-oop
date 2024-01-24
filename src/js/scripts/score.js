@@ -1,6 +1,9 @@
 export default class Score {
-    constructor(scoreBlock, score = 0) {
-        this.scoreBlock = document.querySelector(scoreBlock);
+    constructor(container, score = 0) {
+        this.container = container;
+
+        this.scoreBlock = this.container.querySelector(".ipa-snake-game-score .ipa-snake-game-score-count");
+
         this.score = score;
 
         this.draw();
