@@ -1,4 +1,4 @@
-import {convertSpeed, convertVolume, findElements} from "./functions.js";
+import {convertSpeed, convertVolume, findTargetElements} from "./functions.js";
 
 import {SELECTOR_SETTINGS_SPEED, SELECTOR_SETTINGS_WALLS, SELECTOR_SETTINGS_SOUNDS, SELECTOR_SETTINGS_VOLUME} from "./constants.js";
 
@@ -6,10 +6,10 @@ export default class Settings {
     constructor(container, config) {
         this.config = config;
 
-        this.speedSettingsElements = findElements(container, SELECTOR_SETTINGS_SPEED);
-        this.wallsSettingsElements = findElements(container, SELECTOR_SETTINGS_WALLS);
-        this.soundsSettingsElements = findElements(container, SELECTOR_SETTINGS_SOUNDS);
-        this.volumeSettingsElements = findElements(container, SELECTOR_SETTINGS_VOLUME);
+        this.speedSettingsElements = findTargetElements(container, SELECTOR_SETTINGS_SPEED);
+        this.wallsSettingsElements = findTargetElements(container, SELECTOR_SETTINGS_WALLS);
+        this.soundsSettingsElements = findTargetElements(container, SELECTOR_SETTINGS_SOUNDS);
+        this.volumeSettingsElements = findTargetElements(container, SELECTOR_SETTINGS_VOLUME);
 
         this.settings();
     }

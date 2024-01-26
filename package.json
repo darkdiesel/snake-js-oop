@@ -2,10 +2,10 @@
   "name": "ipa-snake-js-game",
   "version": "1.0.0",
   "description": "Adaptation of the classic game snake",
-  "main": "dist/js/ipa-snake-js-game.js",
-  "module": "dist/js/ipa-snake-js-game.esm.js",
-  "sass": "src/scss/snake-game.scss",
-  "style": "dist/css/snake-game.css",
+  "main": "dist/js/ipa-snake-game.js",
+  "module": "dist/js/ipa-snake-game.esm.js",
+  "sass": "src/scss/ipa-snake-game.scss",
+  "style": "dist/css/ipa-snake-game.min.css",
   "directories": {
     "example": "examples"
   },
@@ -15,6 +15,7 @@
     "production": "cross-env NODE_ENV=production NODE_OPTIONS=--max_old_space_size=4096 webpack",
     "dev": "npm run development",
     "development": "cross-env NODE_ENV=development NODE_OPTIONS=--max_old_space_size=4096 webpack",
+    "serve": "webpack serve --open",
     "clear-cache": "cd ./node_modules && rm -r ./.cache"
   },
   "repository": {
@@ -34,7 +35,6 @@
     "autoprefixer": "^10.4.17",
     "cross-env": "^7.0.3",
     "css-loader": "^6.9.1",
-    "http-server": "^14.1.1",
     "mini-css-extract-plugin": "^2.7.7",
     "postcss": "^8.4.33",
     "postcss-cli": "^11.0.0",
@@ -50,6 +50,7 @@
     "style-loader": "^3.3.4",
     "webpack": "^5.90.0",
     "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1",
     "webpack-remove-empty-scripts": "^1.0.4"
   }
 }

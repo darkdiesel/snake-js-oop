@@ -8,9 +8,9 @@ const mode = isDev ? "development" : "production";
 
 module.exports = {
     mode: mode,
-    entry:{
+    entry: {
         'ipa-snake-game.bundle.js': './src/js/ipa-snake-game.js',
-        'ipa-snake-game.min.css': './src/sass/ipa-snake-game.scss',
+        'ipa-snake-game.min.css': './src/scss/ipa-snake-game.scss',
     },
     output: {
         filename: path.join("js", "[name]"),
@@ -19,6 +19,9 @@ module.exports = {
         clean: true,
     },
     devtool: isDev ? "eval-source-map" : undefined,
+    devServer: {
+        static: './',
+    },
     module: {
         rules: [
             {
@@ -80,4 +83,7 @@ module.exports = {
             "**/tsconfig.json",
         ],
     },
+    optimization: {
+        runtimeChunk: 'single',
+    }
 };

@@ -40,11 +40,13 @@ export function isNullOrUndefined(value) {
 
 // DOM
 
-export function findElements(container, selector) {
-    let target = container.getAttribute(selector);
+export function findTargetElements(container, selector) {
+    return findElements(container.getAttribute(selector))
+}
 
-    if (target) {
-        return document.querySelectorAll(parseSelector(target));
+export function findElements(selector) {
+    if (selector) {
+        return document.querySelectorAll(parseSelector(selector));
     } else {
         return [];
     }
