@@ -1,4 +1,5 @@
-import {drawCell} from "./functions";
+import {isNullOrUndefined} from "./functions";
+
 export default class Snake {
 
     constructor(config, controls) {
@@ -16,12 +17,12 @@ export default class Snake {
         // snake 1 step move audio
         this.moveAudio = new Audio();
         this.moveAudio.preload = 'auto';
-        this.moveAudio.src = '/audio/browser-games/snake/mr_9999_14.wav';
+        this.moveAudio.src = '../audio/mr_9999_14.wav';
 
         // snake crashed move audio
         this.gameOverAudio = new Audio();
         this.gameOverAudio.preload = 'auto';
-        this.gameOverAudio.src = '/audio/browser-games/snake/mr_9999_08.wav';
+        this.gameOverAudio.src = '../audio/mr_9999_08.wav';
 
         this.config.gameOverStatus = false;
 
@@ -120,18 +121,11 @@ export default class Snake {
     /**
      * Draw snake by Points. First point as head draw with different collor
      *
-     * @param context
+     * @param canvas
      */
-    draw(context) {
+    draw(canvas) {
         this.points.forEach((el, index) => {
-            //TODO: change color for snake head?
-            // if (index == 0) {
-            //     context.fillStyle = this.config.snakeColor;
-            // } else {
-            //     context.fillStyle = this.config.snakeColor;
-            // }
-
-            drawCell(el.x, el.y, context, this.config.snakeColor, this.config);
+            canvas.drawCell(el.x, el.y, this.config.snakeColor);
         });
     }
 
@@ -199,21 +193,29 @@ export default class Snake {
      * Check controls
      */
     control(controls) {
-        controls.btnUp.addEventListener("click", async (e) => {
-            this.moveUp();
-        });
+        if (!isNullOrUndefined(controls.btnUp)) {
+            controls.btnUp.addEventListener("click", async (e) => {
+                this.moveUp();
+            });
+        }
 
-        controls.btnDown.addEventListener("click", async (e) => {
-            this.moveDown();
-        });
+        if (!isNullOrUndefined(controls.btnDown)) {
+            controls.btnDown.addEventListener("click", async (e) => {
+                this.moveDown();
+            });
+        }
 
-        controls.btnLeft.addEventListener("click", async (e) => {
-            this.moveLeft();
-        });
+        if (!isNullOrUndefined(controls.btnDown)) {
+            controls.btnLeft.addEventListener("click", async (e) => {
+                this.moveLeft();
+            });
+        }
 
-        controls.btnRight.addEventListener("click", async (e) => {
-            this.moveRight();
-        });
+        if (!isNullOrUndefined(controls.btnDown)) {
+            controls.btnRight.addEventListener("click", async (e) => {
+                this.moveRight();
+            });
+        }
 
         document.addEventListener("keydown", (e) => {
             switch (e.code) {

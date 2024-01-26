@@ -1,7 +1,7 @@
-import {drawCell, getRandomInt} from "./functions.js";
+import {getRandomInt} from "./functions.js";
 
 export default class Apple {
-    constructor(canvas, config) {
+    constructor(config, canvas) {
         this.config = config;
         this.canvas = canvas;
 
@@ -12,22 +12,22 @@ export default class Apple {
 
         this.eatAudio = new Audio();
         this.eatAudio.preload = 'auto';
-        this.eatAudio.src = '/audio/browser-games/snake/mr_9999_05.wav';
+        this.eatAudio.src = '../audio/browser-games/snake/mr_9999_05.wav';
 
         this.randomPosition();
     }
 
-    draw(context, changeVisibility = false) {
+    draw(canvas, changeVisibility = false) {
         if (changeVisibility) {
             this.show = !this.show;
         }
 
         // remove apple from canvas
-        this.canvas.context.clearRect(this.x, this.y, this.config.pointSizePx, this.config.pointSizePx);
+        canvas.clearCell(this.x, this.y, this.config.pointSizePx, this.config.pointSizePx);
 
         // if apple visible draw it
         if (this.show) {
-            drawCell(this.x, this.y, context, this.config.appleColor, this.config);
+            canvas.drawCell(this.x, this.y, this.config.appleColor);
         }
     }
 

@@ -1,5 +1,7 @@
 import Config from "./config.js";
 
+import Settings from "./settings.js";
+
 import Canvas from "./canvas.js";
 import Controls from "./controls.js";
 import Score from "./score.js";
@@ -9,12 +11,21 @@ import Apple from "./apple.js";
 
 import Loop from "./loop.js";
 
-import {convertVolume, convertSpeed, drawCell} from "./functions.js"
+import {SELECTOR_SNAKE, SELECTOR_SNAKE_START} from "./constants";
 
-export default class Game {
+import {findElements} from "./functions.js";
+
+export default class IpaSnakeGame {
     constructor(container, options = {}) {
+        if (container === null) {
+            return
+        }
+
         // setup config
         this.config = new Config(options);
+
+        // setup settings
+        this.settings = new Settings(container, this.config);
 
         // create canvas and control elements
         this.canvas = new Canvas(container, this.config);
@@ -22,15 +33,17 @@ export default class Game {
         this.score = new Score(container, 0);
 
         // game elements
-        this.snake = new Snake(this.config, this.controls);
-        this.apple = new Apple(this.canvas, this.config); // create apple
+        this.snake = new Snake(this.config, this.controls); // create snake
+        this.apple = new Apple(this.config, this.canvas); // create apple
 
         // this.loop = undefined;
         this.loop = new Loop(this.updateSnake.bind(this), this.drawSnake.bind(this), this.drawApple.bind(this), this.config);
+
+        this.start();
     }
 
     start() {
-        this.clearCanvas();
+        this.canvas.clearFull();
         this.loop.start();
     }
 
@@ -40,7 +53,7 @@ export default class Game {
         this.snake.gameOver();
         this.score.setToZero();
 
-        this.clearCanvas();
+        this.canvas.clearFull();
     }
 
     pause() {
@@ -58,26 +71,6 @@ export default class Game {
         this.loop.start();
     }
 
-    mute(mute) {
-        if (mute) {
-            this.config.mute = true;
-        } else {
-            this.config.mute = false;
-        }
-    }
-
-    setSpeed(speed) {
-        this.config.snakeTick = convertSpeed(speed);
-    }
-
-    setVolume(volume) {
-        this.config.gameVolume = convertVolume(volume);
-    }
-
-    setWalls(walls) {
-        this.config.haveWalls = walls;
-    }
-
     updateSnake() {
         if (this.config.gameOverStatus) {
             this.drawGameOver();
@@ -90,29 +83,27 @@ export default class Game {
     drawSnake() {
         this.snake.stopMoveSound();
 
-        this.clearCanvas();
+        this.canvas.clearFull();
 
         this.snake.startMoveSound();
-        this.snake.draw(this.canvas.context);
+        this.snake.draw(this.canvas);
 
-        this.apple.draw(this.canvas.context);
+        this.apple.draw(this.canvas);
     }
 
     drawApple(){
-        this.apple.draw(this.canvas.context, true);
-    }
-
-    clearCanvas() {
-        this.canvas.context.clearRect(0, 0, this.canvas.element.width, this.canvas.element.height);
+        this.apple.draw(this.canvas, true);
     }
 
     drawGameOver() {
         for (let y = 0; y < this.canvas.element.height; y+=this.config.pointSizePx) {
             for (let x = 0; x < this.canvas.element.width; x+=this.config.pointSizePx) {
-                drawCell(x, y, this.canvas.context, this.config.snakeColor, this.config);
+                this.canvas.drawCell(x, y, this.config.snakeColor);
             }
         }
 
         this.config.gameOverStatus = false;
     }
 }
+
+new IpaSnakeGame( document.querySelector(SELECTOR_SNAKE) );

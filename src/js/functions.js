@@ -34,9 +34,22 @@ export function convertSpeed(speed) {
     return (501 - (50 * speed));;
 }
 
-export function drawCell(x, y, context, color, config){
-    context.fillStyle = color;
+export function isNullOrUndefined(value) {
+    return value === undefined || value === null;
+}
 
-    context.strokeRect(x, y, config.pointSizePx, config.pointSizePx);
-    context.fillRect(x + config.pointPadding, y + config.pointPadding, config.pointSizePx - config.pointPadding * 2, config.pointSizePx - config.pointPadding * 2);
+// DOM
+
+export function findElements(container, selector) {
+    let target = container.getAttribute(selector);
+
+    if (target) {
+        return document.querySelectorAll(parseSelector(target));
+    } else {
+        return [];
+    }
+}
+
+export function parseSelector(selector) {
+    return selector.replace(/#([^\s"#']+)/g, (match, id) => `#${CSS.escape(id)}`)
 }

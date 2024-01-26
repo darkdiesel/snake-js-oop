@@ -25,4 +25,19 @@ export default class Canvas {
     getCenterY(){
         return Math.floor((this.element.height / this.config.pointSizePx)  / 2) * this.config.pointSizePx;
     }
+
+    drawCell(x, y, color){
+        this.context.fillStyle = color;
+
+        this.context.strokeRect(x, y, this.config.pointSizePx, this.config.pointSizePx);
+        this.context.fillRect(x + this.config.pointPadding, y + this.config.pointPadding, this.config.pointSizePx - this.config.pointPadding * 2, this.config.pointSizePx - this.config.pointPadding * 2);
+    }
+
+    clearFull(){
+        this.clearCell(0, 0, this.element.width, this.element.height);
+    }
+
+    clearCell(x, y, width, height) {
+        this.context.clearRect(x, y, width, height);
+    }
 }
