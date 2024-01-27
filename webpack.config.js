@@ -3,40 +3,43 @@ const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const RemoveEmptyScriptsPlugin = require("webpack-remove-empty-scripts");
 
-const isDev = process.env.NODE_ENV === "development";
-const mode = isDev ? "development" : "production";
+const devMode = process.env.NODE_ENV === "development";
+const mode = devMode ? "development" : "production";
 
 module.exports = {
     mode: mode,
     entry: {
-        'ipa-snake-game.bundle.js': './src/js/ipa-snake-game.js',
-        'ipa-snake-game.min.css': './src/scss/ipa-snake-game.scss',
+        'ipa-snake-game.bundle': './src/js/ipa-snake-game.js',
+        'ipa-snake-game.min': './src/scss/ipa-snake-game.scss',
     },
     output: {
-        filename: path.join("js", "[name]"),
+        filename: path.join("js", "[name].js"),
         path: path.resolve(__dirname, 'dist'),
-        assetModuleFilename: 'images/[hash][ext][query]',
         clean: true,
     },
-    devtool: isDev ? "eval-source-map" : undefined,
+    devtool: devMode ? "eval-source-map" : undefined,
     devServer: {
         static: './',
     },
     module: {
         rules: [
             {
-                test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
-            },
-            {
-                test: /.scss$/,
+                test: /\.(sa|sc|c)ss$/,
                 use: [
-                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            publicPath: (resourcePath, context) => {
+                                return path.relative(path.dirname(resourcePath), context) + "/";
+                            },
+                        },
+                    },
+                    //devMode ? "style-loader" : MiniCssExtractPlugin.loader,
                     {
                         loader: "css-loader",
                         options: {
                             url: false,
-                            sourceMap: isDev,
+                            sourceMap: devMode,
                         },
                     },
                     {
@@ -54,13 +57,13 @@ module.exports = {
                                     "postcss-sort-media-queries",
                                 ],
                             },
-                            sourceMap: isDev,
+                            sourceMap: devMode,
                         },
                     },
                     {
                         loader: "sass-loader",
                         options: {
-                            sourceMap: isDev,
+                            sourceMap: devMode,
                         },
                     }
                 ],
@@ -68,12 +71,16 @@ module.exports = {
         ],
     },
     plugins: [
-        new MiniCssExtractPlugin({
-            filename: path.join("css", "ipa-snake-game.min.css"),
-        }),
+        new MiniCssExtractPlugin(
+            {
+                filename: path.join("css", "[name].css"),
+                chunkFilename: path.join("css", "[id].css"),
+                ignoreOrder: false, // Enable to remove warnings about conflicting order
+            }
+        ),
         new RemoveEmptyScriptsPlugin(),
-    ],
-    watch: isDev,
+    ].concat(devMode ? [] : []),
+    watch: devMode,
     watchOptions: {
         ignored: [
             "**/node_modules",
@@ -83,7 +90,7 @@ module.exports = {
             "**/tsconfig.json",
         ],
     },
-    optimization: {
-        runtimeChunk: 'single',
-    }
+    // optimization: {
+    //     runtimeChunk: 'single',
+    // }
 };
