@@ -2,8 +2,9 @@ import {isNullOrUndefined} from "./functions";
 
 export default class Snake {
 
-    constructor(config, controls) {
+    constructor(config, canvas, controls) {
         this.config = config;
+        this.canvas = canvas;
 
         this.x = this.config.centerX;
         this.y = this.config.centerY;
@@ -37,7 +38,7 @@ export default class Snake {
      * @param score
      * @param canvas
      */
-    update(apple, score, canvas) {
+    update(apple, score) {
         this.x += this.speedX;
         this.y += this.speedY;
 
@@ -45,9 +46,9 @@ export default class Snake {
             if (this.config.haveWalls) {
                 this.config.gameOverStatus = true;
             } else {
-                this.x = canvas.element.width - this.config.pointSizePx;
+                this.x = this.canvas.element.width - this.config.pointSizePx;
             }
-        } else if (this.x >= canvas.element.width) {
+        } else if (this.x >= this.canvas.element.width) {
             if (this.config.haveWalls) {
                 this.config.gameOverStatus = true;
             } else {
@@ -59,9 +60,9 @@ export default class Snake {
             if (this.config.haveWalls) {
                 this.config.gameOverStatus = true;
             } else {
-                this.y = canvas.element.height - this.config.pointSizePx;
+                this.y = this.canvas.element.height - this.config.pointSizePx;
             }
-        } else if (this.y >= canvas.element.height) {
+        } else if (this.y >= this.canvas.element.height) {
             if (this.config.haveWalls) {
                 this.config.gameOverStatus = true;
             } else {
@@ -123,9 +124,9 @@ export default class Snake {
      *
      * @param canvas
      */
-    draw(canvas) {
+    draw() {
         this.points.forEach((el, index) => {
-            canvas.drawCell(el.x, el.y, this.config.snakeColor);
+            this.canvas.drawCell(el.x, el.y, this.config.snakeColor);
         });
     }
 

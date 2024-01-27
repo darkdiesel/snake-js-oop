@@ -17,17 +17,17 @@ export default class Apple {
         this.randomPosition();
     }
 
-    draw(canvas, changeVisibility = false) {
+    draw(changeVisibility = false) {
         if (changeVisibility) {
             this.show = !this.show;
         }
 
         // remove apple from canvas
-        canvas.clearCell(this.x, this.y, this.config.pointSizePx, this.config.pointSizePx);
+        this.canvas.clearCell(this.x, this.y, this.config.pointSizePx, this.config.pointSizePx);
 
         // if apple visible draw it
         if (this.show) {
-            canvas.drawCell(this.x, this.y, this.config.appleColor);
+            this.canvas.drawCell(this.x, this.y, this.config.appleColor);
         }
     }
 

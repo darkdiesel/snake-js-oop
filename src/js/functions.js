@@ -31,7 +31,7 @@ export function convertSpeed(speed) {
         speed = 1;
     }
 
-    return (501 - (50 * speed));;
+    return (501 - (50 * speed));
 }
 
 export function isNullOrUndefined(value) {

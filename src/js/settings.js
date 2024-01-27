@@ -62,11 +62,7 @@ export default class Settings {
     }
 
     mute(mute) {
-        if (mute) {
-            this.config.mute = true;
-        } else {
-            this.config.mute = false;
-        }
+        this.config.mute = !!mute;
     }
 
     setSpeed(speed) {
