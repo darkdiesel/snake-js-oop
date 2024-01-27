@@ -1,4 +1,5 @@
 import {isNullOrUndefined} from "./functions";
+import controlsTouch from "./control-touch";
 
 export default class Snake {
 
@@ -36,7 +37,6 @@ export default class Snake {
      *
      * @param apple
      * @param score
-     * @param canvas
      */
     update(apple, score) {
         this.x += this.speedX;
@@ -112,20 +112,14 @@ export default class Snake {
         let x = this.x + speedX;
         let y = this.y + speedY;
 
-        if ((this.points[1].x === x) && (this.points[1].y === y)) {
-            return true;
-        } else {
-            return false;
-        }
+        return (this.points[1].x === x) && (this.points[1].y === y);
     }
 
     /**
-     * Draw snake by Points. First point as head draw with different collor
-     *
-     * @param canvas
+     * Draw snake by Points. First point as head draw with different color
      */
     draw() {
-        this.points.forEach((el, index) => {
+        this.points.forEach((el) => {
             this.canvas.drawCell(el.x, el.y, this.config.snakeColor);
         });
     }
@@ -136,7 +130,7 @@ export default class Snake {
     startMoveSound() {
         if (!this.config.mute) {
             this.moveAudio.volume = this.config.gameVolume;
-            this.moveAudio.play().then(r => {
+            this.moveAudio.play().then(() => {
             });
         }
     }
@@ -157,7 +151,7 @@ export default class Snake {
     startGameOverSound() {
         if (!this.config.mute) {
             this.gameOverAudio.volume = this.config.gameVolume;
-            this.gameOverAudio.play().then(r => {
+            this.gameOverAudio.play().then(() => {
             });
         }
     }
@@ -194,30 +188,35 @@ export default class Snake {
      * Check controls
      */
     control(controls) {
+        // html buttons controls
         if (!isNullOrUndefined(controls.btnUp)) {
-            controls.btnUp.addEventListener("click", async (e) => {
+            controls.btnUp.addEventListener("click", async () => {
                 this.moveUp();
             });
         }
 
         if (!isNullOrUndefined(controls.btnDown)) {
-            controls.btnDown.addEventListener("click", async (e) => {
+            controls.btnDown.addEventListener("click", async () => {
                 this.moveDown();
             });
         }
 
         if (!isNullOrUndefined(controls.btnDown)) {
-            controls.btnLeft.addEventListener("click", async (e) => {
+            controls.btnLeft.addEventListener("click", async () => {
                 this.moveLeft();
             });
         }
 
         if (!isNullOrUndefined(controls.btnDown)) {
-            controls.btnRight.addEventListener("click", async (e) => {
+            controls.btnRight.addEventListener("click", async () => {
                 this.moveRight();
             });
         }
 
+        // touch swipe controls
+        new controlsTouch(this.canvas, () => {this.moveUp();}, () => {this.moveDown();}, () => {this.moveLeft();}, () => {this.moveRight();});
+
+        // keyboard controls (wasd, arrows, numpad arrows)
         document.addEventListener("keydown", (e) => {
             switch (e.code) {
                 case "KeyW":
@@ -249,38 +248,30 @@ export default class Snake {
     }
 
     moveUp() {
-        if (this.checkIfTurnBack(0, -this.config.pointSizePx)) {
-            return;
+        if (!this.checkIfTurnBack(0, -this.config.pointSizePx)) {
+            this.speedX = 0;
+            this.speedY = -this.config.pointSizePx;
         }
-
-        this.speedX = 0;
-        this.speedY = -this.config.pointSizePx;
     }
 
     moveDown() {
-        if (this.checkIfTurnBack(0, this.config.pointSizePx)) {
-            return;
+        if (!this.checkIfTurnBack(0, this.config.pointSizePx)) {
+            this.speedX = 0;
+            this.speedY = this.config.pointSizePx;
         }
-
-        this.speedX = 0;
-        this.speedY = this.config.pointSizePx;
     }
 
     moveLeft() {
-        if (this.checkIfTurnBack(-this.config.pointSizePx, 0)) {
-            return;
+        if (!this.checkIfTurnBack(-this.config.pointSizePx, 0)) {
+            this.speedX = -this.config.pointSizePx;
+            this.speedY = 0;
         }
-
-        this.speedX = -this.config.pointSizePx;
-        this.speedY = 0;
     }
 
     moveRight() {
-        if (this.checkIfTurnBack(this.config.pointSizePx, 0)) {
-            return;
+        if (!this.checkIfTurnBack(this.config.pointSizePx, 0)) {
+            this.speedX = this.config.pointSizePx;
+            this.speedY = 0;
         }
-
-        this.speedX = this.config.pointSizePx;
-        this.speedY = 0;
     }
 }
