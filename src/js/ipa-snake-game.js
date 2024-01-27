@@ -1,6 +1,7 @@
 import Config from "./config.js";
 
 import Settings from "./settings.js";
+import Actions from "./actions.js";
 
 import Canvas from "./canvas.js";
 import Controls from "./controls.js";
@@ -11,14 +12,12 @@ import Apple from "./apple.js";
 
 import Loop from "./loop.js";
 
-import {SELECTOR_SNAKE, SELECTOR_SNAKE_START} from "./constants";
-
-import {findElements} from "./functions.js";
+import {SELECTOR_SNAKE} from "./constants";
 
 export default class IpaSnakeGame {
     constructor(container, options = {}) {
         if (container === null) {
-            return
+            return;
         }
 
         // setup config
@@ -33,17 +32,16 @@ export default class IpaSnakeGame {
         this.score = new Score(container, 0);
 
         // game elements
-        this.snake = new Snake(this.config, this.controls); // create snake
+        this.snake = new Snake(this.config, this.canvas, this.controls); // create snake
         this.apple = new Apple(this.config, this.canvas); // create apple
 
         // this.loop = undefined;
         this.loop = new Loop(this.updateSnake.bind(this), this.drawSnake.bind(this), this.drawApple.bind(this), this.config);
 
-        this.start();
+        this.actions = new Actions(this.start.bind(this), this.stop.bind(this), this.pause.bind(this), this.reset.bind(this), container, this.config);
     }
 
     start() {
-        this.canvas.clearFull();
         this.loop.start();
     }
 
@@ -57,25 +55,29 @@ export default class IpaSnakeGame {
     }
 
     pause() {
-        this.loop.stop();
+        if (this.loop.isActive()) {
+            this.loop.stop();
+        }
     }
 
     reset() {
-        this.loop.stop();
+        if (this.loop.isActive()) {
+            this.loop.stop();
 
-        this.snake.gameOver();
+            this.snake.gameOver();
 
-        this.score.setToZero();
-        this.apple.randomPosition();
+            this.score.setToZero();
+            this.apple.randomPosition();
 
-        this.loop.start();
+            this.loop.start();
+        }
     }
 
     updateSnake() {
         if (this.config.gameOverStatus) {
             this.drawGameOver();
         } else {
-            this.snake.update(this.apple, this.score, this.canvas);
+            this.snake.update(this.apple, this.score);
         }
 
     }
@@ -86,9 +88,13 @@ export default class IpaSnakeGame {
         this.canvas.clearFull();
 
         this.snake.startMoveSound();
-        this.snake.draw(this.canvas);
+        this.snake.draw();
 
-        this.apple.draw(this.canvas);
+        this.apple.draw();
+
+        if (this.config.haveWalls){
+            this.canvas.drawWalls();
+        }
     }
 
     drawApple(){

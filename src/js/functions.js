@@ -55,3 +55,28 @@ export function findElements(selector) {
 export function parseSelector(selector) {
     return selector.replace(/#([^\s"#']+)/g, (match, id) => `#${CSS.escape(id)}`)
 }
+
+export function filterElements(elements, container, attribute){
+    let _elements = [];
+
+    for (const elem of elements) {
+        let selector = elem.getAttribute(attribute);
+
+        let snakeElements = findElements(selector);
+
+        let addElement = false;
+
+        for (const snakeElement of snakeElements) {
+            if (snakeElement.isEqualNode(container)) {
+                addElement = true;
+                break;
+            }
+        }
+
+        if (addElement) {
+            _elements.push(elem);
+        }
+    }
+
+    return _elements;
+}

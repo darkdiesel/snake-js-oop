@@ -28,9 +28,16 @@ export default class Canvas {
 
     drawCell(x, y, color){
         this.context.fillStyle = color;
+        this.context.strokeStyle = color;
 
         this.context.strokeRect(x, y, this.config.pointSizePx, this.config.pointSizePx);
         this.context.fillRect(x + this.config.pointPadding, y + this.config.pointPadding, this.config.pointSizePx - this.config.pointPadding * 2, this.config.pointSizePx - this.config.pointPadding * 2);
+    }
+
+    drawWalls(color){
+        this.context.strokeStyle = color;
+
+        this.context.strokeRect(0, 0, this.element.width, this.element.height);
     }
 
     clearFull(){

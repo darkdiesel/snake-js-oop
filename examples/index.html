@@ -95,7 +95,7 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <button type="button" class="btn btn-success ipa-snake-game-start"><i class="fa-solid fa-play me-1"></i> Play</button>
+                                <button type="button" class="btn btn-success" data-ipa-snake-game="start" data-ipa-snake-game-parent="#ipa-snake-game"><i class="fa-solid fa-play me-1"></i> Play</button>
                             </div>
                         </div>
                     </div>
@@ -105,13 +105,13 @@
                         <div class="card-body">
                             <div class="row justify-content-center">
                                 <dov class="col-12">
-                                    <div class="ipa-snake-game" data-ipa-snake-game="init" data-ipa-snake-js-s-speed="#snakeSpeed" data-ipa-snake-js-s-walls="#snakeWalls" data-ipa-snake-js-s-sounds="#snakeSounds" data-ipa-snake-js-s-volume="#snakeVolume">
+                                    <div id="ipa-snake-game" class="ipa-snake-game" data-ipa-snake-game="init" data-ipa-snake-game-s-speed="#snakeSpeed" data-ipa-snake-game-s-walls="#snakeWalls" data-ipa-snake-game-s-sounds="#snakeSounds" data-ipa-snake-game-s-volume="#snakeVolume">
                                         <div class="row my-1">
                                             <div class="col-12">
-                                                <button type="button" class="btn btn-sm btn-outline-secondary ipa-snake-game-start mx-2" data-ipa-snake-game="start"><i class="bi bi-play-fill"></i> <span class="visually-hidden">Play</span></button>
-                                                <button type="button" class="btn btn-sm btn-outline-secondary ipa-snake-game-pause mx-2" data-ipa-snake-game="pause"><i class="bi bi-pause-fill"></i> <span class="visually-hidden">Pause</span></button>
-                                                <button type="button" class="btn btn-sm btn-outline-secondary ipa-snake-game-stop mx-2" data-ipa-snake-game="stop"><i class="bi bi-stop-fill"></i> <span class="visually-hidden">Stop</span></button>
-                                                <button type="button" class="btn btn-sm btn-outline-secondary ipa-snake-game-reset mx-2" data-ipa-snake-game="reset"><i class="bi bi-arrow-clockwise"></i> <span class="visually-hidden">Reset</span></button>
+                                                <button type="button" class="btn btn-sm btn-outline-secondary mx-2" data-ipa-snake-game="start" data-ipa-snake-game-parent="#ipa-snake-game"><i class="bi bi-play-fill"></i> <span class="visually-hidden">Play</span></button>
+                                                <button type="button" class="btn btn-sm btn-outline-secondary mx-2" data-ipa-snake-game="pause" data-ipa-snake-game-parent="#ipa-snake-game"><i class="bi bi-pause-fill"></i> <span class="visually-hidden">Pause</span></button>
+                                                <button type="button" class="btn btn-sm btn-outline-secondary mx-2" data-ipa-snake-game="stop" data-ipa-snake-game-parent="#ipa-snake-game"><i class="bi bi-stop-fill"></i> <span class="visually-hidden">Stop</span></button>
+                                                <button type="button" class="btn btn-sm btn-outline-secondary mx-2" data-ipa-snake-game="reset" data-ipa-snake-game-parent="#ipa-snake-game"><i class="bi bi-arrow-clockwise"></i> <span class="visually-hidden">Reset</span></button>
                                                 <span class="ipa-snake-game-score">
                                                 Points: <span class="ipa-snake-game-score-count badge text-bg-secondary mb-2">0</span>
                                             </span>

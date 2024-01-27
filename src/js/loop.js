@@ -38,7 +38,7 @@ export default class Loop {
     }
 
     start() {
-        if (this.gameTickTimer === undefined) {
+        if (!this.isActive()) {
             this.gameTickTimer = setInterval(() => {
                 this.gameTick();
             }, this.config.gameTick);
@@ -46,10 +46,14 @@ export default class Loop {
     }
 
     stop() {
-        if (this.gameTickTimer !== undefined) {
+        if (this.isActive()) {
             clearInterval(this.gameTickTimer);
 
             this.gameTickTimer = undefined;
         }
+    }
+
+    isActive(){
+        return !(this.gameTickTimer === undefined);
     }
 }
