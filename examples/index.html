@@ -127,14 +127,14 @@
                                                 <div class="col-12">
                                                     <div class="row">
                                                         <div class="col-12 my-0">
-                                                            <button type="button" class="btn btn-sm btn-outline-info ipa-snake-game-control-up"><i class="bi bi-chevron-up"></i> <span class="visually-hidden">Up</span></button>
+                                                            <button type="button" class="btn btn-sm btn-outline-info" data-ipa-snake-game="up" data-ipa-snake-game-parent="#ipa-snake-game"><i class="bi bi-chevron-up"></i> <span class="visually-hidden">Up</span></button>
                                                         </div>
                                                         <div class="col-12">
-                                                            <button type="button" class="btn btn-sm btn-outline-info ipa-snake-game-control-left mx-3"><i class="bi bi-chevron-left"></i> <span class="visually-hidden">Left</span></button>
-                                                            <button type="button" class="btn btn-sm btn-outline-info ipa-snake-game-control-right mx-3"><i class="bi bi-chevron-right"></i> <span class="visually-hidden">Right</span></button>
+                                                            <button type="button" class="btn btn-sm btn-outline-info mx-3" data-ipa-snake-game="left" data-ipa-snake-game-parent="#ipa-snake-game"><i class="bi bi-chevron-left"></i> <span class="visually-hidden">Left</span></button>
+                                                            <button type="button" class="btn btn-sm btn-outline-info mx-3" data-ipa-snake-game="right" data-ipa-snake-game-parent="#ipa-snake-game"><i class="bi bi-chevron-right"></i> <span class="visually-hidden">Right</span></button>
                                                         </div>
                                                         <div class="col-12 my-0">
-                                                            <button type="button" class="btn btn-sm btn-outline-info ipa-snake-game-control-down"><i class="bi bi-chevron-down"></i> <span class="visually-hidden">Down</span></button>
+                                                            <button type="button" class="btn btn-sm btn-outline-info" data-ipa-snake-game="down" data-ipa-snake-game-parent="#ipa-snake-game"><i class="bi bi-chevron-down"></i> <span class="visually-hidden">Down</span></button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -153,34 +153,5 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <script src="../dist/js/ipa-snake-game.bundle.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function(){
-            // let snakeGame = new SnakeGame(document.querySelector(".ipa-snake-game"));
-            //
-            // const startGameBtns = document.querySelectorAll('.ipa-snake-game-start');
-            //
-            // startGameBtns.forEach(el => el.addEventListener('click', event => {
-            //     snakeGame.start();
-            // }));
-            //
-            // const stopGameBtns = document.querySelectorAll('.ipa-snake-game-stop');
-            //
-            // stopGameBtns.forEach(el => el.addEventListener('click', event => {
-            //     snakeGame.stop();
-            // }));
-            //
-            // const pauseGameBtns = document.querySelectorAll('.ipa-snake-game-pause');
-            //
-            // pauseGameBtns.forEach(el => el.addEventListener('click', event => {
-            //     snakeGame.pause();
-            // }));
-            //
-            // const resetGameBtns = document.querySelectorAll('.ipa-snake-game-reset');
-            //
-            // resetGameBtns.forEach(el => el.addEventListener('click', event => {
-            //     snakeGame.reset();
-            // }));
-        });
-    </script>
 </body>
 </html>

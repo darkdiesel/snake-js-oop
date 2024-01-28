@@ -1,9 +1,6 @@
-import {isNullOrUndefined} from "./functions";
-import controlsTouch from "./control-touch";
-
 export default class Snake {
 
-    constructor(config, canvas, controls) {
+    constructor(config, canvas) {
         this.config = config;
         this.canvas = canvas;
 
@@ -27,9 +24,6 @@ export default class Snake {
         this.gameOverAudio.src = '../audio/mr_9999_08.wav';
 
         this.config.gameOverStatus = false;
-
-        // init controls
-        this.control(controls);
     }
 
     /**
@@ -182,69 +176,6 @@ export default class Snake {
         this.maxPoints = this.config.snakeStartSize;
 
         // this.config.gameOverStatus = false;
-    }
-
-    /**
-     * Check controls
-     */
-    control(controls) {
-        // html buttons controls
-        if (!isNullOrUndefined(controls.btnUp)) {
-            controls.btnUp.addEventListener("click", async () => {
-                this.moveUp();
-            });
-        }
-
-        if (!isNullOrUndefined(controls.btnDown)) {
-            controls.btnDown.addEventListener("click", async () => {
-                this.moveDown();
-            });
-        }
-
-        if (!isNullOrUndefined(controls.btnDown)) {
-            controls.btnLeft.addEventListener("click", async () => {
-                this.moveLeft();
-            });
-        }
-
-        if (!isNullOrUndefined(controls.btnDown)) {
-            controls.btnRight.addEventListener("click", async () => {
-                this.moveRight();
-            });
-        }
-
-        // touch swipe controls
-        new controlsTouch(this.canvas, () => {this.moveUp();}, () => {this.moveDown();}, () => {this.moveLeft();}, () => {this.moveRight();});
-
-        // keyboard controls (wasd, arrows, numpad arrows)
-        document.addEventListener("keydown", (e) => {
-            switch (e.code) {
-                case "KeyW":
-                case "ArrowUp":
-                case "Numpad8":
-                    e.preventDefault();
-                    this.moveUp();
-                    break;
-                case "KeyS":
-                case "ArrowDown":
-                case "Numpad2":
-                    e.preventDefault();
-                    this.moveDown();
-                    break;
-                case "KeyA":
-                case "ArrowLeft":
-                case "Numpad4":
-                    e.preventDefault();
-                    this.moveLeft();
-                    break;
-                case "KeyD":
-                case "ArrowRight":
-                case "Numpad6":
-                    e.preventDefault();
-                    this.moveRight();
-                    break;
-            }
-        });
     }
 
     moveUp() {

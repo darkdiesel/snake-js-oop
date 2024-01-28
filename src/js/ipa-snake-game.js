@@ -4,15 +4,19 @@ import Settings from "./settings.js";
 import Actions from "./actions.js";
 
 import Canvas from "./canvas.js";
-import Controls from "./controls.js";
 import Score from "./score.js";
 
 import Snake from "./snake.js";
 import Apple from "./apple.js";
 
+import controlsKeyboard from "./controls-keyboard.js";
+import ControlsButtons from "./controls-buttons.js";
+import ControlsTouch from "./controls-touch";
+
 import Loop from "./loop.js";
 
 import {SELECTOR_SNAKE} from "./constants";
+
 
 export default class IpaSnakeGame {
     constructor(container, options = {}) {
@@ -28,17 +32,20 @@ export default class IpaSnakeGame {
 
         // create canvas and control elements
         this.canvas = new Canvas(container, this.config);
-        this.controls = new Controls(container);
         this.score = new Score(container, 0);
 
         // game elements
-        this.snake = new Snake(this.config, this.canvas, this.controls); // create snake
+        this.snake = new Snake(this.config, this.canvas); // create snake
         this.apple = new Apple(this.config, this.canvas); // create apple
+
+        new controlsKeyboard(this.canvas, () => {this.snake.moveUp();}, () => {this.snake.moveDown();}, () => {this.snake.moveLeft();}, () => {this.snake.moveRight();});
+        new ControlsButtons(container, () => {this.snake.moveUp();}, () => {this.snake.moveDown();}, () => {this.snake.moveLeft();}, () => {this.snake.moveRight();});
+        new ControlsTouch(this.canvas, () => {this.snake.moveUp();}, () => {this.snake.moveDown();}, () => {this.snake.moveLeft();}, () => {this.snake.moveRight();});
 
         // this.loop = undefined;
         this.loop = new Loop(this.updateSnake.bind(this), this.drawSnake.bind(this), this.drawApple.bind(this), this.config);
 
-        this.actions = new Actions(this.start.bind(this), this.stop.bind(this), this.pause.bind(this), this.reset.bind(this), container, this.config);
+        new Actions(this.start.bind(this), this.stop.bind(this), this.pause.bind(this), this.reset.bind(this), container, this.config);
     }
 
     start() {
@@ -79,7 +86,6 @@ export default class IpaSnakeGame {
         } else {
             this.snake.update(this.apple, this.score);
         }
-
     }
 
     drawSnake() {
@@ -112,4 +118,6 @@ export default class IpaSnakeGame {
     }
 }
 
-new IpaSnakeGame( document.querySelector(SELECTOR_SNAKE) );
+for (const snake of document.querySelectorAll(SELECTOR_SNAKE)) {
+    new IpaSnakeGame(snake);
+}
