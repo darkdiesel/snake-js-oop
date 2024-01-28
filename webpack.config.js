@@ -3,6 +3,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const RemoveEmptyScriptsPlugin = require("webpack-remove-empty-scripts");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const ProgressPlugin = require('progress-webpack-plugin')
 
 const devMode = process.env.NODE_ENV === "development";
 const mode = devMode ? "development" : "production";
@@ -80,14 +81,15 @@ module.exports = {
                 ignoreOrder: false, // Enable to remove warnings about conflicting order
             }
         ),
-    new CopyWebpackPlugin({
-        patterns: [
-            {
-                from: path.resolve(__dirname, 'src/audio'),
-                to: path.resolve(__dirname, 'dist/audio'),
-            },
-        ],
-    }),
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: path.resolve(__dirname, 'src/audio'),
+                    to: path.resolve(__dirname, 'dist/audio'),
+                },
+            ],
+        }),
+        new ProgressPlugin(true),
         new RemoveEmptyScriptsPlugin(),
     ].concat(devMode ? [] : []),
     watch: devMode,
