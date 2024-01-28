@@ -17,7 +17,7 @@ module.exports = {
         filename: path.join("js", "[name].js"),
         path: path.resolve(__dirname, 'dist'),
         clean: true,
-        publicPath: 'https://cdn.example.com/assets/'
+        publicPath: '/dist/'
     },
     devtool: devMode ? "eval-source-map" : undefined,
     devServer: {
