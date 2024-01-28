@@ -1,5 +1,7 @@
 import {getRandomInt} from "./functions.js";
 
+import eatAudio from "../audio/mr_9999_05.wav";
+
 export default class Apple {
     constructor(config, canvas) {
         this.config = config;
@@ -12,7 +14,8 @@ export default class Apple {
 
         this.eatAudio = new Audio();
         this.eatAudio.preload = 'auto';
-        this.eatAudio.src = '../audio/browser-games/snake/mr_9999_05.wav';
+        // this.eatAudio.src = '../audio/mr_9999_05.wav';
+        this.eatAudio.src = eatAudio;
 
         this.randomPosition();
     }
@@ -39,7 +42,10 @@ export default class Apple {
     startEatSound() {
         if (!this.config.mute) {
             this.eatAudio.volume = this.config.gameVolume;
-            this.eatAudio.play().then(r => {});
+
+            this.eatAudio.play().catch(() => {
+                this.config.mute = true;
+            });
         }
     }
 

@@ -17,12 +17,20 @@ module.exports = {
     output: {
         filename: path.join("js", "[name].js"),
         path: path.resolve(__dirname, 'dist'),
+        assetModuleFilename: 'assets/[hash][ext][query]',
         clean: true,
         publicPath: '/dist/'
     },
     devtool: devMode ? "eval-source-map" : undefined,
     devServer: {
-        static: './',
+        static: {
+            directory: path.join(__dirname, 'examples'),
+        },
+        client: {
+            progress: true,
+        },
+        compress: true,
+        port: 8080,
     },
     module: {
         rules: [
@@ -71,6 +79,14 @@ module.exports = {
                     }
                 ],
             },
+            {
+                test: /\.wav/,
+                type: 'asset/resource',
+                generator : {
+                    filename : 'assets/audio/[name][ext][query]',
+                    emit: false, //disable copy audio files
+                }
+            }
         ],
     },
     plugins: [
@@ -85,7 +101,7 @@ module.exports = {
             patterns: [
                 {
                     from: path.resolve(__dirname, 'src/audio'),
-                    to: path.resolve(__dirname, 'dist/audio'),
+                    to: path.resolve(__dirname, 'dist/assets/audio'),
                 },
             ],
         }),

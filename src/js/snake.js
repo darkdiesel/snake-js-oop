@@ -1,3 +1,6 @@
+import moveAudio from "../audio/mr_9999_14.wav";
+import gameOverAudio from "../audio/mr_9999_08.wav";
+
 export default class Snake {
 
     constructor(config, canvas) {
@@ -16,12 +19,14 @@ export default class Snake {
         // snake 1 step move audio
         this.moveAudio = new Audio();
         this.moveAudio.preload = 'auto';
-        this.moveAudio.src = '../audio/mr_9999_14.wav';
+        // this.moveAudio.src = '../audio/mr_9999_14.wav';
+        this.moveAudio.src = moveAudio;
 
         // snake crashed move audio
         this.gameOverAudio = new Audio();
         this.gameOverAudio.preload = 'auto';
-        this.gameOverAudio.src = '../audio/mr_9999_08.wav';
+        // this.gameOverAudio.src = '../audio/mr_9999_08.wav';
+        this.gameOverAudio.src = gameOverAudio;
 
         this.config.gameOverStatus = false;
     }
@@ -124,7 +129,9 @@ export default class Snake {
     startMoveSound() {
         if (!this.config.mute) {
             this.moveAudio.volume = this.config.gameVolume;
-            this.moveAudio.play().then(() => {
+
+            this.moveAudio.play().then(() => {}).catch(() => {
+                this.config.mute = true;
             });
         }
     }
@@ -145,7 +152,9 @@ export default class Snake {
     startGameOverSound() {
         if (!this.config.mute) {
             this.gameOverAudio.volume = this.config.gameVolume;
-            this.gameOverAudio.play().then(() => {
+
+            this.gameOverAudio.play().catch(() => {
+                this.config.mute = true;
             });
         }
     }

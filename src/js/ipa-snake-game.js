@@ -24,28 +24,30 @@ export default class IpaSnakeGame {
             return;
         }
 
+        this.container = container;
+
         // setup config
         this.config = new Config(options);
 
         // setup settings
-        this.settings = new Settings(container, this.config);
+        new Settings(this.container, this.config);
 
         // create canvas and control elements
-        this.canvas = new Canvas(container, this.config);
-        this.score = new Score(container, 0);
+        this.canvas = new Canvas(this.container, this.config);
+        this.score = new Score(this.container, 0);
 
         // game elements
         this.snake = new Snake(this.config, this.canvas); // create snake
         this.apple = new Apple(this.config, this.canvas); // create apple
 
         new controlsKeyboard(this.canvas, () => {this.snake.moveUp();}, () => {this.snake.moveDown();}, () => {this.snake.moveLeft();}, () => {this.snake.moveRight();});
-        new ControlsButtons(container, () => {this.snake.moveUp();}, () => {this.snake.moveDown();}, () => {this.snake.moveLeft();}, () => {this.snake.moveRight();});
+        new ControlsButtons(this.container, () => {this.snake.moveUp();}, () => {this.snake.moveDown();}, () => {this.snake.moveLeft();}, () => {this.snake.moveRight();});
         new ControlsTouch(this.canvas, () => {this.snake.moveUp();}, () => {this.snake.moveDown();}, () => {this.snake.moveLeft();}, () => {this.snake.moveRight();});
 
         // this.loop = undefined;
         this.loop = new Loop(this.updateSnake.bind(this), this.drawSnake.bind(this), this.drawApple.bind(this), this.config);
 
-        new Actions(this.start.bind(this), this.stop.bind(this), this.pause.bind(this), this.reset.bind(this), container, this.config);
+        new Actions(this.start.bind(this), this.stop.bind(this), this.pause.bind(this), this.reset.bind(this), this.container, this.config);
     }
 
     start() {
