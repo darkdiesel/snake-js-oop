@@ -42,7 +42,7 @@ export default class Settings {
             });
         }
 
-        // init walls settings controls
+        // init sounds settings controls
         for (const elem of this.soundsSettingsElements) {
             this.mute(!elem.checked)
 

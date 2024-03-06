@@ -19,10 +19,10 @@ npm install
 ```
  
 ## Samples
-Samples in this game takes from site [rekkerd.org](https://rekkerd.org/mr-9999-brick-game-9999-in-1-samples/)
+Samples for this game takes from site [rekkerd.org](https://rekkerd.org/mr-9999-brick-game-9999-in-1-samples/)
 
 ## Usage
-Check **examples** folder how o use snake. Actions, settings, controls are optionals. All what you just need add css and js to your page, create html tag and add
+Check **examples** folder with examples how to run a snake. Actions, settings, controls are optional. All what you need it's just add css and js to your page, and past code:
 
 ```html
 <div data-ipa-snake-game="init"></div>
