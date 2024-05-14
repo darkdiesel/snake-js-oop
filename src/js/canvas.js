@@ -14,6 +14,7 @@ export default class Canvas {
 
         this.container.querySelector(".ipa-snake-game-canvas-wrapper").appendChild(this.element);
 
+        // set start position
         this.config.centerX = this.getCenterX();
         this.config.centerY = this.getCenterY();
     }

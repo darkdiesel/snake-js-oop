@@ -18,7 +18,7 @@ export function convertVolume(volume) {
 }
 
 /**
- * Convert speed. spped = 0 - 10
+ * Convert speed. speed = 0 - 10
  *
  * @param speed
  */

@@ -69,18 +69,21 @@ export default class Snake {
             }
         }
 
+        // add new point to the beginning of a snake array
         this.points.unshift({x: this.x, y: this.y});
 
+        // check snake length and clean last if it's moved
         if (this.points.length > this.maxPoints) {
-            this.points.pop();
+            this.points.pop(); // remove last point in array
         }
 
+        // check all points of snake and compare with apple position
         this.points.forEach((el, index) => {
             if (el.x === apple.x && el.y === apple.y) {
                 apple.startEatSound();
                 this.maxPoints++;
                 score.incScore();
-                apple.randomPosition();
+                apple.randomPosition(); // @TODO: create new position and check if it not on snake
             }
 
             for (let i = index + 1; i < this.points.length; i++) {
